@@ -1,8 +1,5 @@
 class MoviesController < ApplicationController
   def create
-    # params hash looks like this
-    # "the_title"=>"1", "the_year"=>"2", "the_duration"=>"3", "the_discription"=>"4", "the_image"=>"5", "the_director_id"=>"6"
-    
     m = Movie.new
     m.title = params.fetch("the_title")
     m.year = params.fetch("the_year")
@@ -14,14 +11,18 @@ class MoviesController < ApplicationController
     m.save
 
     redirect_to("/movies")
-    
-    # Retrieve the user's input from params
-    # Create a record in the movie table
-    # Save
+  end
 
-    # Redirect the user back to teh /movies URL
+  def destroy
+    the_id = params.fetch("path_id")
 
+    matching_records = Movie.where({ :id => the_id })
 
+    the_movie = matching_records.at(0) 
+
+    the_movie.destroy
+
+    redirect_to("/movies")
   end
 
   def index
@@ -39,4 +40,6 @@ class MoviesController < ApplicationController
 
     render({ :template => "movie_templates/show" })
   end
+
+
 end
